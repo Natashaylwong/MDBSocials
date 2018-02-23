@@ -29,7 +29,8 @@ class NewPostViewController: UIViewController {
         setupButtons()
         setupTextFields()
         setupEventImageView()
-     //   setupCalendar()
+        setupCalendar()
+        
         // Do any additional setup after loading the view.
     }
     
@@ -48,7 +49,7 @@ class NewPostViewController: UIViewController {
         imageViewBackground.alpha = 0.5
         
         view.addSubview(imageViewBackground)
-        nameEventTextField = UITextField(frame: CGRect(x: 10, y: 0.6 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 20, height: 40))
+        nameEventTextField = UITextField(frame: CGRect(x: 10, y: 0.6 * UIScreen.main.bounds.height - 50, width: UIScreen.main.bounds.width - 20, height: 40))
         nameEventTextField.adjustsFontSizeToFitWidth = true
         nameEventTextField.font = UIFont(name: "Strawberry Blossom", size: 30)
         nameEventTextField.placeholder = "Event Name"
@@ -62,7 +63,7 @@ class NewPostViewController: UIViewController {
         nameEventTextField.textColor = UIColor.black
         view.addSubview(nameEventTextField)
         
-        descriptionTextField = UITextField(frame: CGRect(x: 10, y: 0.6 * UIScreen.main.bounds.height+60, width: UIScreen.main.bounds.width - 20, height: 60))
+        descriptionTextField = UITextField(frame: CGRect(x: 10, y: 0.6 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 20, height: 60))
         descriptionTextField.adjustsFontSizeToFitWidth = true
         descriptionTextField.font = UIFont(name: "Strawberry Blossom", size: 30)
         descriptionTextField.placeholder = "Short Description of the Event"
@@ -137,26 +138,17 @@ class NewPostViewController: UIViewController {
         newPostButton.addTarget(self, action: #selector(addNewPost), for: .touchUpInside)
         view.addSubview(newPostButton)
         
-        let datePickerView = UIDatePicker()
-        datePickerView.date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd h:mm a"
-        var dateAsString = dateFormatter.string(from: datePickerView.date)
-        print(dateAsString)
-        dateFormatter.dateFormat = "MMM-yy-dd HH:mm"
-        dateAsString = dateFormatter.string(from: datePickerView.date)
-        print(dateAsString)
-        view.addSubview(datePickerView)
     }
     func setupCalendar() {
         let datePicker: UIDatePicker = UIDatePicker()
         
         // Posiiton date picket within a view
-        datePicker.frame = CGRect(x: 10, y: 50, width: self.view.frame.width, height: 200)
+        datePicker.frame = CGRect(x: 0, y: 470, width: self.view.frame.width, height: 100)
         
         // Set some of UIDatePicker properties
         datePicker.timeZone = NSTimeZone.local
         datePicker.backgroundColor = UIColor.white
+        datePicker.alpha = 0.5
         
         // Add an event to call onDidChangeDate function when value is changed.
         datePicker.addTarget(self, action: #selector(NewPostViewController.datePickerValueChanged(_:)), for: .valueChanged)

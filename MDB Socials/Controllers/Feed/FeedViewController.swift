@@ -37,7 +37,7 @@ class FeedViewController: UIViewController {
         self.setupNavBar()
 //        self.setupNewPostView()
 //        self.setupButton()
-        self.setupCollectionView()
+//        self.setupCollectionView()
         Users.getCurrentUser(withId: (Auth.auth().currentUser?.uid)!, block: {(cUser) in
             self.currentUser = cUser
         })
@@ -131,11 +131,11 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if indexPath.row == 0 {
             cell.profileImage.image = #imageLiteral(resourceName: "yeezy")
         }
-//        else {
-//            postInQuestion.getEventPic {
-//                cell.profileImage.image = postInQuestion.image
-//            }
-//        }
+        else {
+            postInQuestion.getEventPic {
+                cell.profileImage.image = postInQuestion.image
+            }
+        }
     
         return cell
     }
