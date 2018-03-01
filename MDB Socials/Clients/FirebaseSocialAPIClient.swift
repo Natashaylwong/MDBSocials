@@ -40,7 +40,7 @@ class FirebaseSocialAPIClient {
             let imageURL = snapshot.metadata?.downloadURL()?.absoluteString as! String
             let interested = [hostId]
             let newPost = ["name": name, "description": description, "date": date, "imageURL": imageURL, "host": host, "hostId": hostId] as [String: Any]
-            let childUpdates = ["/\(key)/": newPost]
+            let childUpdates = ["\(key)": newPost]
             postsRef.updateChildValues(childUpdates)
         }
     }

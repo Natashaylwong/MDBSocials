@@ -37,7 +37,7 @@ class FeedViewController: UIViewController {
         self.setupNavBar()
 //        self.setupNewPostView()
 //        self.setupButton()
-//        self.setupCollectionView()
+        self.setupCollectionView()
         Users.getCurrentUser(withId: (Auth.auth().currentUser?.uid)!, block: {(cUser) in
             self.currentUser = cUser
         })
@@ -45,8 +45,6 @@ class FeedViewController: UIViewController {
             self.posts.append(contentsOf: posts)
             print("the contents of posts are now... \(self.posts)")
             self.postCollectionView.reloadData()
-
-
 
 //            activityIndicator.stopAnimating()
 
@@ -84,14 +82,15 @@ class FeedViewController: UIViewController {
 
     
     func setupCollectionView() {
-        let frame = CGRect(x: 10, y: newPostButton.frame.maxY + 10, width: UIScreen.main.bounds.width - 20, height: UIScreen.main.bounds.height - newPostButton.frame.maxY - 20)
+        let frame = CGRect(x: 0, y: 50, width: view.frame.width, height: view.frame.height-50)
         let cvLayout = UICollectionViewFlowLayout()
+        cvLayout.minimumLineSpacing = 5
         postCollectionView = UICollectionView(frame: frame, collectionViewLayout: cvLayout)
         postCollectionView.delegate = self
         postCollectionView.dataSource = self
-        postCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "post")
+        postCollectionView.register(PostCollectionViewCell.self, forCellWithReuseIdentifier: "post")
 
-        postCollectionView.backgroundColor = UIColor.lightGray
+        postCollectionView.backgroundColor = UIColor.white
         view.addSubview(postCollectionView)
 
 
@@ -120,36 +119,43 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return posts.count
+     //   return 10
     }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = postCollectionView.dequeueReusableCell(withReuseIdentifier: "post", for: indexPath) as! PostCollectionViewCell
         cell.awakeFromNib()
-        let postInQuestion = posts[indexPath.row]
-        cell.postText.text = postInQuestion.text
-        cell.posterText.text = postInQuestion.poster
         
-        if indexPath.row == 0 {
-            cell.profileImage.image = #imageLiteral(resourceName: "yeezy")
-        }
-        else {
-            postInQuestion.getEventPic {
-                cell.profileImage.image = postInQuestion.image
-            }
-        }
+        let postInQuestion = posts[indexPath.item]
+        cell.postText.text = postInQuestion.text
+        print(postInQuestion.text)
+        cell.posterText.text = postInQuestion.poster
+        print(postInQuestion.poster)
+//
+//        if indexPath.item == 0 {
+//            cell.profileImage.image = #imageLiteral(resourceName: "yeezy")
+//        }
+//        else {
+//            postInQuestion.getEventPic {
+        cell.profileImage.image = postInQuestion.image
+//            }
+//        }
     
         return cell
     }
-
-    override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
-        return CGSize(width: postCollectionView.bounds.width - 20, height: 100)
-    }
+//
+//    override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
+//        return CGSize(width: postCollectionView.bounds.width - 20, height: 100)
+//    }
+//
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width - 20, height: 200)
+        return CGSize(width: view.frame.width - 20, height: 200)
+        
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
+        return UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
     }
 }
 

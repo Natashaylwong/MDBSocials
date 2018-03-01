@@ -20,6 +20,10 @@ class NewPostViewController: UIViewController {
     var selectFromCameraButton: UIButton!
     let picker = UIImagePickerController()
     var date: String!
+    let datePicker: UIDatePicker = UIDatePicker()
+    var currentUser: Users!
+    var exitButton: UIButton!
+    var imageText: UILabel!
     
    // var chosenImage: UIImageView!
     
@@ -30,7 +34,12 @@ class NewPostViewController: UIViewController {
         setupTextFields()
         setupEventImageView()
         setupCalendar()
-        
+        if let currUser = Auth.auth().currentUser {
+            Users.getCurrentUser(withId: currUser.uid, block:{ (currentUser) in
+                self.currentUser = currentUser
+            })
+        }
+        setupExit()
         // Do any additional setup after loading the view.
     }
     
@@ -38,6 +47,16 @@ class NewPostViewController: UIViewController {
         view.endEditing(true)
         super.touchesBegan(touches, with: event)
     }
+    func setupExit() {
+        exitButton = UIButton(frame: CGRect(x: 310, y: 20, width: 30, height: 30))
+        exitButton.setImage(UIImage(named: "exit"), for: .normal)
+        exitButton.addTarget(self, action: #selector(exitScreen), for: .touchUpInside)
+        view.addSubview(exitButton)
+    }
+    @objc func exitScreen(sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     
     func setupTextFields() {
         let width = UIScreen.main.bounds.size.width
@@ -79,34 +98,43 @@ class NewPostViewController: UIViewController {
         
     }
     func setupEventImageView() {
-        imagePost = UIImageView(frame: CGRect(x: 30, y: 50, width: view.frame.width - 60, height: 60))
+        imagePost = UIImageView(frame: CGRect(x: 25, y: 60, width: view.frame.width - 50, height: 200))
+        imagePost.layer.backgroundColor = UIColor.white.cgColor
+        imagePost.layer.borderColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        imagePost.layer.borderWidth = 2
+        imageText = UILabel(frame: CGRect(x: 30, y: 140, width: view.frame.width - 60, height: 50))
+        imageText.text = "Insert a Picture of the Event"
+        imageText.textAlignment = .center
+        imageText.font = UIFont(name: "Strawberry Blossom", size: 40)
+        imageText.textColor = UIColor(red: 0.8078, green: 0.8078, blue: 0.8078, alpha: 1.0)
         imagePost.layer.cornerRadius = 5.0
         imagePost.contentMode = .scaleToFill
         imagePost.clipsToBounds = true
         
-        selectFromLibraryButton = UIButton(frame: CGRect(x: 50, y: 300, width: UIScreen.main.bounds.width * 0.3, height: 40))
+        selectFromLibraryButton = UIButton(frame: CGRect(x: 50, y: 280, width: UIScreen.main.bounds.width * 0.3, height: 40))
         selectFromLibraryButton.titleLabel?.font = UIFont(name: "Strawberry Blossom", size: 35)
         selectFromLibraryButton.setTitle("Library", for: .normal)
         selectFromLibraryButton.layer.borderColor =  UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
         selectFromLibraryButton.layer.borderWidth = 1
         selectFromLibraryButton.layer.backgroundColor = UIColor.white.cgColor
-        selectFromLibraryButton.setTitleColor(UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0), for: .normal)
+        selectFromLibraryButton.setTitleColor(UIColor(red: 0.8078, green: 0.8078, blue: 0.8078, alpha: 1.0), for: .normal)
         selectFromLibraryButton.addTarget(self, action: #selector(pickImage), for: .touchUpInside)
         
-//        view.bringSubview(toFront: selectFromLibraryButton)
+        view.bringSubview(toFront: selectFromLibraryButton)
         
-        selectFromCameraButton = UIButton(frame: CGRect(x: 200, y: 300, width: UIScreen.main.bounds.width * 0.3, height: 40))
+        selectFromCameraButton = UIButton(frame: CGRect(x: 200, y: 280, width: UIScreen.main.bounds.width * 0.3, height: 40))
         selectFromCameraButton.titleLabel?.font = UIFont(name: "Strawberry Blossom", size: 35)
         selectFromCameraButton.setTitle("Camera", for: .normal)
         selectFromCameraButton.layer.borderColor =  UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
         selectFromCameraButton.layer.borderWidth = 1
         selectFromCameraButton.layer.backgroundColor = UIColor.white.cgColor
-        selectFromCameraButton.setTitleColor(UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0), for: .normal)
+        selectFromCameraButton.setTitleColor(UIColor(red: 0.8078, green: 0.8078, blue: 0.8078, alpha: 1.0), for: .normal)
         selectFromCameraButton.addTarget(self, action: #selector(takeImage), for: .touchUpInside)
        
         view.addSubview(selectFromCameraButton)
         view.addSubview(selectFromLibraryButton)
         view.addSubview(imagePost)
+        view.addSubview(imageText)
         
     }
     
@@ -114,25 +142,27 @@ class NewPostViewController: UIViewController {
         picker.allowsEditing = false
         picker.sourceType = .photoLibrary
         picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        picker.delegate = self
+        imageText.removeFromSuperview()
         present(picker, animated: true, completion: nil)
     }
     @objc func takeImage(sender: UIButton!) {
         picker.allowsEditing = false
         picker.sourceType = .camera
         picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera)!
+        imageText.removeFromSuperview()
         present(picker, animated: true, completion: nil)
     }
     
     func setupButtons() {
         newPostButton = UIButton(frame: CGRect(x: 10, y: 0.9 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 20, height: 30))
-        newPostButton.layoutIfNeeded()
+      //  newPostButton.layoutIfNeeded()
         newPostButton.titleLabel?.font = UIFont(name: "Strawberry Blossom", size: 35)
         newPostButton.setTitle("Create New Post", for: .normal)
         newPostButton.setTitleColor(.white, for: .normal)
         newPostButton.layer.borderWidth = 2.0
         newPostButton.layer.cornerRadius = 5.0
         newPostButton.layer.backgroundColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
-        newPostButton.setTitleColor(.white, for: .normal)
         newPostButton.layer.borderColor = UIColor.white.cgColor
         newPostButton.layer.masksToBounds = true
         newPostButton.addTarget(self, action: #selector(addNewPost), for: .touchUpInside)
@@ -140,43 +170,52 @@ class NewPostViewController: UIViewController {
         
     }
     func setupCalendar() {
-        let datePicker: UIDatePicker = UIDatePicker()
-        
         // Posiiton date picket within a view
-        datePicker.frame = CGRect(x: 0, y: 470, width: self.view.frame.width, height: 100)
+        datePicker.frame = CGRect(x: 10, y: 480, width: self.view.frame.width-20, height: 100)
         
         // Set some of UIDatePicker properties
         datePicker.timeZone = NSTimeZone.local
         datePicker.backgroundColor = UIColor.white
-        datePicker.alpha = 0.5
-        
-        // Add an event to call onDidChangeDate function when value is changed.
-        datePicker.addTarget(self, action: #selector(NewPostViewController.datePickerValueChanged(_:)), for: .valueChanged)
+        datePicker.alpha = 0.7
         
         // Add DataPicker to the view
         self.view.addSubview(datePicker)
     }
-    @objc func datePickerValueChanged(_ sender: UIDatePicker){
-        // Create date formatter
+
+    @objc func addNewPost() {
+        let currentUser = self.currentUser
+        let description = descriptionTextField.text!
+        let name = nameEventTextField.text!
+        var date = datePicker.date
         let dateFormatter: DateFormatter = DateFormatter()
         // Set date format
         dateFormatter.dateFormat = "MM/dd/yyyy hh:mm a"
         // Apply date format
-        let selectedDate: String = dateFormatter.string(from: sender.date)
-        date = selectedDate
-        
+        let selectedDate: String = dateFormatter.string(from: date)
         print("Selected value \(selectedDate)")
-    }
-
-    @objc func addNewPost() {
-        let currentUser = Auth.auth().currentUser
-        let imageData = UIImageJPEGRepresentation(imagePost.image!, 0.9)
-        let description = descriptionTextField.text!
-        let name = nameEventTextField.text!
-        let date = self.date
-        
-        //TODO: Implement using Firebase!
-        FirebaseSocialAPIClient.createNewPost(name: name, description: description, date: date!, imageData: imageData!, host: (currentUser?.displayName)!, hostId: (currentUser?.uid)!)
+        if imagePost.image == nil || description == "" || name == "" {
+            let alert = UIAlertController(title: "Not all information inputted", message: "Unable to create a new post", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            let currentUser = self.currentUser
+            let imageData = UIImageJPEGRepresentation(imagePost.image!, 0.9)
+            let description = descriptionTextField.text!
+            let name = nameEventTextField.text!
+            var date = datePicker.date
+            let dateFormatter: DateFormatter = DateFormatter()
+            // Set date format
+            dateFormatter.dateFormat = "MM/dd/yyyy hh:mm a"
+            // Apply date format
+            let selectedDate: String = dateFormatter.string(from: date)
+            print("Selected value \(selectedDate)")
+           
+            
+            //TODO: Implement using Firebase!
+            FirebaseSocialAPIClient.createNewPost(name: name, description: description, date: selectedDate, imageData: imageData!, host: (currentUser?.name)!, hostId: (currentUser?.id)!)
+            
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
 
@@ -194,15 +233,19 @@ class NewPostViewController: UIViewController {
 
 extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     //MARK: - Delegates
-    func imagePickerController(_ picker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        selectFromLibraryButton.removeFromSuperview()
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        print("pls")
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         imagePost.contentMode = .scaleAspectFit
         imagePost.image = chosenImage
         dismiss(animated:true, completion: nil)
     }
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
+
 }
+
+
