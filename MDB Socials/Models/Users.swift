@@ -42,13 +42,14 @@ class Users {
     }
 //    required init?(map: Map) {
 //    }
-//    
+//
 //    func mapping(map: Map) {
 //        name                            <- map["name"]
 //        email                           <- map["email"]
 //        username                        <- map["username"]
 //        password                        <- map["password"]
-//        id                         <- map["id"]
+//        id                              <- map["id"]
+//        imageUrl                        <- map["imageUrl"]
 //    }
     
     static func getCurrentUser(withId: String, block: @escaping (Users) -> ()) {

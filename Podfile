@@ -9,6 +9,11 @@ target 'MDB Socials' do
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
   pod 'ObjectMapper'
+  pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git'
+  pod 'HanekeSwift', :git => 'https://github.com/Haneke/HanekeSwift.git', :branch => 'feature/swift-3'
+  pod 'SwiftyJSON'
+  pod "PromiseKit", "~> 4.0"
+  pod 'PromiseKit/Alamofire'
 
   # Pods for MDB Socials
 

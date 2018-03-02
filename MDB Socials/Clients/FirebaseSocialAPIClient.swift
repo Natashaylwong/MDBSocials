@@ -41,6 +41,10 @@ class FirebaseSocialAPIClient {
             let childUpdates = ["\(key)": newPost]
             postsRef.updateChildValues(childUpdates)
         }
+//        if let postDict = snapshot.value as? [String: Any] {
+//            postDict["postId"] = snapshot.key
+//            let post = Post(JSON: postDict)
+//        }
     }
     
     
@@ -52,14 +56,13 @@ class FirebaseSocialAPIClient {
 //        usersRef.updateChildValues(childUpdates)
         
         let usersRef = Database.database().reference().child("Users")
-        let key = usersRef.childByAutoId().key
-        let storage = Storage.storage().reference().child("User Images/\(key)")
+        let storage = Storage.storage().reference().child("User Images/\(id)")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
         storage.putData(profilePic, metadata: metadata).observe(.success) {(snapshot) in
             let imageURL = snapshot.metadata?.downloadURL()?.absoluteString as! String
             let newUser = ["name": name, "email": email, "username": username, "imageURL": imageURL]
-            let childUpdates = ["/\(key)/": newUser]
+            let childUpdates = ["/\(id)/": newUser]
             usersRef.updateChildValues(childUpdates)
         }
     }
