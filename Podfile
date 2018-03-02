@@ -8,7 +8,7 @@ target 'MDB Socials' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
-  
+  pod 'ObjectMapper'
 
   # Pods for MDB Socials
 
