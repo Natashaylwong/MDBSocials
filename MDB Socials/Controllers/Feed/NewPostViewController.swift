@@ -25,8 +25,6 @@ class NewPostViewController: UIViewController {
     var exitButton: UIButton!
     var imageText: UILabel!
     
-   // var chosenImage: UIImageView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         picker.delegate = self
@@ -63,6 +61,7 @@ class NewPostViewController: UIViewController {
         let height = UIScreen.main.bounds.size.height
         let imageViewBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
         imageViewBackground.image = UIImage(named: "clouds")
+        
         // you can change the content mode:
         imageViewBackground.contentMode = UIViewContentMode.scaleAspectFill
         imageViewBackground.alpha = 0.5
@@ -186,7 +185,7 @@ class NewPostViewController: UIViewController {
         let currentUser = self.currentUser
         let description = descriptionTextField.text!
         let name = nameEventTextField.text!
-        var date = datePicker.date
+        let date = datePicker.date
         let dateFormatter: DateFormatter = DateFormatter()
         // Set date format
         dateFormatter.dateFormat = "MM/dd/yyyy hh:mm a"
@@ -202,17 +201,20 @@ class NewPostViewController: UIViewController {
             let imageData = UIImageJPEGRepresentation(imagePost.image!, 0.9)
             let description = descriptionTextField.text!
             let name = nameEventTextField.text!
-            var date = datePicker.date
+            let date = datePicker.date
             let dateFormatter: DateFormatter = DateFormatter()
+            let interested = [currentUser?.id]
+            
             // Set date format
             dateFormatter.dateFormat = "MM/dd/yyyy hh:mm a"
+           
             // Apply date format
             let selectedDate: String = dateFormatter.string(from: date)
             print("Selected value \(selectedDate)")
            
             
             //TODO: Implement using Firebase!
-            FirebaseSocialAPIClient.createNewPost(name: name, description: description, date: selectedDate, imageData: imageData!, host: (currentUser?.name)!, hostId: (currentUser?.id)!)
+            FirebaseSocialAPIClient.createNewPost(name: name, description: description, date: selectedDate, imageData: imageData!, host: (currentUser?.name)!, hostId: (currentUser?.id)!, interested: interested as! [String])
             
             self.dismiss(animated: true, completion: nil)
         }

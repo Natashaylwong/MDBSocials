@@ -16,7 +16,7 @@ class Post {
     var imageUrl: String?
     var posterId: String?
     var eventName: String?
-    var interested: String?
+    var interested: [String]?
     var poster: String?
     var id: String?
     var image: UIImage?
@@ -25,17 +25,26 @@ class Post {
     init(id: String, postDict: [String:Any]?) {
         self.id = id
         if postDict != nil {
-            if let text = postDict!["text"] as? String {
+            if let id = postDict!["postId"] as? String {
+                self.id = id
+            }
+            if let text = postDict!["description"] as? String {
                 self.text = text
             }
             if let imageUrl = postDict!["imageUrl"] as? String {
                 self.imageUrl = imageUrl
             }
-            if let posterId = postDict!["posterId"] as? String {
+            if let posterId = postDict!["hostId"] as? String {
                 self.posterId = posterId
             }
-            if let poster = postDict!["poster"] as? String {
+            if let poster = postDict!["host"] as? String {
                 self.poster = poster
+            }
+            if let eventName = postDict!["name"] as? String {
+                self.eventName = eventName
+            }
+            if let interested = postDict!["interested"] as? [String] {
+                self.interested = interested
             }
         }
     }
@@ -43,14 +52,13 @@ class Post {
 
     func getEventPic(withBlock: @escaping () -> ()) {
         //TODO: Get Picture from Storage
-        let postsRef = Database.database().reference().child("Posts")
-        let key = postsRef.childByAutoId().key
-//        let storage = Storage.storage().reference().child("Event Images/\(key)")
-        let ref = Storage.storage().reference().child("Event Images\(key)")
-        ref.getData(maxSize: 1 * 2048 * 2048) { data, error in
+//        let postsRef = Database.database().reference().child("Posts")
+        let ref = Storage.storage().reference().child("Event Images/\(id!)")
+        ref.getData(maxSize: 5 * 2048 * 2048) { data, error in
             if let error = error {
                 print(error)
             } else {
+                print("are you going in?")
                 self.image = UIImage(data: data!)
                 withBlock()
             }

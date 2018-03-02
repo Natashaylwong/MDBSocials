@@ -33,6 +33,7 @@ class SignupViewController: UIViewController {
         view.endEditing(true)
         super.touchesBegan(touches, with: event)
     }
+    // Setting up MDB Social's title
     func setupTitle() {
         navigationController?.navigationBar.tintColor = UIColor.white;
         navigationController?.navigationBar.barTintColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0)
@@ -60,6 +61,7 @@ class SignupViewController: UIViewController {
         
     }
     
+    // Setting up all the textfields required to sign up
     func setupTextFields() {
         usernameTextField = UITextField(frame: CGRect(x: 10, y: 0.5 * UIScreen.main.bounds.height + 60, width: UIScreen.main.bounds.width - 20, height: 40))
         usernameTextField.adjustsFontSizeToFitWidth = true
@@ -119,7 +121,7 @@ class SignupViewController: UIViewController {
         view.addSubview(passwordTextField)
     
     }
-    
+    // Setting up buttons such as the sign up button
     func setupButtons() {
         
         signupButton = UIButton(frame: CGRect(x: 10, y: 0.9 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 20, height: 30))
@@ -138,7 +140,9 @@ class SignupViewController: UIViewController {
     
     }
     
-    
+    /* Segues to the feed view controller if the sign up button is clicked, also checks for require
+     * fields
+     */
     @objc func signupButtonClicked() {
         //TODO: Implement this method with Firebase!
         let email = emailTextField.text!

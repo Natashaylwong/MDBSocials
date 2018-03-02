@@ -29,6 +29,7 @@
 		6915A3DE203D6CB70007C747 /* FirebaseSocialAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6915A3DD203D6CB70007C747 /* FirebaseSocialAPIClient.swift */; };
 		6915A3E0203D6CDC0007C747 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6915A3DF203D6CDC0007C747 /* Users.swift */; };
 		6915A3E2203D6CED0007C747 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6915A3E1203D6CED0007C747 /* Post.swift */; };
+		693DC2502048BCFE002D6379 /* image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 693DC24F2048BCFD002D6379 /* image.jpg */; };
 		69D35F8B203E7E8500976D18 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D35F8A203E7E8500976D18 /* PostCollectionViewCell.swift */; };
 		A6A27DE2D0EF64FCACA28E03 /* Pods_MDB_SocialsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 888540B83F5C49AB6835A890 /* Pods_MDB_SocialsUITests.framework */; };
 /* End PBXBuildFile section */
@@ -76,6 +77,7 @@
 		6915A3DD203D6CB70007C747 /* FirebaseSocialAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseSocialAPIClient.swift; sourceTree = "<group>"; };
 		6915A3DF203D6CDC0007C747 /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		6915A3E1203D6CED0007C747 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		693DC24F2048BCFD002D6379 /* image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = image.jpg; path = ../../image.jpg; sourceTree = "<group>"; };
 		69D35F8A203E7E8500976D18 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
 		789D3180FC701B9247D3E08F /* Pods-MDB SocialsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MDB SocialsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MDB SocialsTests/Pods-MDB SocialsTests.release.xcconfig"; sourceTree = "<group>"; };
 		888540B83F5C49AB6835A890 /* Pods_MDB_SocialsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MDB_SocialsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,6 +157,7 @@
 				6915A3E3203D6D350007C747 /* Models */,
 				6915A3D9203D4B910007C747 /* Strawberry Blossom.ttf */,
 				6915A39F203D37570007C747 /* Main.storyboard */,
+				693DC24F2048BCFD002D6379 /* image.jpg */,
 				6915A3A2203D37570007C747 /* Assets.xcassets */,
 				6915A3A4203D37570007C747 /* LaunchScreen.storyboard */,
 				6915A3A7203D37570007C747 /* Info.plist */,
@@ -378,6 +381,7 @@
 				6915A3CE203D3BC50007C747 /* GoogleService-Info.plist in Resources */,
 				6915A3DB203D4F8E0007C747 /* Info.plist in Resources */,
 				6915A3A3203D37570007C747 /* Assets.xcassets in Resources */,
+				693DC2502048BCFE002D6379 /* image.jpg in Resources */,
 				6915A3A1203D37570007C747 /* Main.storyboard in Resources */,
 				6915A3DA203D4B910007C747 /* Strawberry Blossom.ttf in Resources */,
 			);

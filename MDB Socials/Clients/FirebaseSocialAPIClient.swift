@@ -10,6 +10,7 @@ import Foundation
 import Firebase
 
 class FirebaseSocialAPIClient {
+    // Retrieving data from Firebase for a post
     static func fetchPosts(withBlock: @escaping ([Post]) -> ()) {
         //TODO: Implement a method to fetch posts with Firebase!
         let ref = Database.database().reference()
@@ -18,7 +19,7 @@ class FirebaseSocialAPIClient {
             withBlock([post])
         })
     }
-    
+    // Retrieving data from Firebase for a user
     static func fetchUser(id: String, withBlock: @escaping (Users) -> ()) {
         //TODO: Implement a method to fetch posts with Firebase!
         let ref = Database.database().reference()
@@ -28,22 +29,23 @@ class FirebaseSocialAPIClient {
             
         })
     }
-    
-    static func createNewPost(name: String, description: String, date: String, imageData: Data, host: String, hostId: String) {
+    // Creating a new post and saving it into Firebase
+    static func createNewPost(name: String, description: String, date: String, imageData: Data, host: String, hostId: String, interested: [String]) {
         let postsRef = Database.database().reference().child("Posts")
         let key = postsRef.childByAutoId().key
         let storage = Storage.storage().reference().child("Event Images/\(key)")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
-        print("storing")
         storage.putData(imageData, metadata: metadata).observe(.success) {(snapshot) in print("image stored")
             let imageURL = snapshot.metadata?.downloadURL()?.absoluteString as! String
-            let interested = [hostId]
-            let newPost = ["name": name, "description": description, "date": date, "imageURL": imageURL, "host": host, "hostId": hostId] as [String: Any]
+            var interested = [hostId]
+            interested.append(hostId)
+            let newPost = ["name": name, "description": description, "date": date, "imageURL": imageURL, "host": host, "hostId": hostId, "postId": key, "interested": interested] as [String: Any]
             let childUpdates = ["\(key)": newPost]
             postsRef.updateChildValues(childUpdates)
         }
     }
+    // Creating a new user and updating the user node in Firebase
     static func createNewUser(id: String, name: String, email: String, username: String) {
         let usersRef = Database.database().reference().child("Users")
         let newUser = ["name": name, "email": email, "username": username]

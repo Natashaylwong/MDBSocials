@@ -14,29 +14,23 @@ class FeedViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = false
     }
-
+    var selectedCell: Int?
     var newPostView: UITextField!
     var newPostButton: UIButton!
     var postCollectionView: UICollectionView!
     var posts: [Post] = []
-    var auth = Auth.auth()
+  //  var auth = Auth.auth()
     var postsRef: DatabaseReference = Database.database().reference().child("Posts")
     var storage: StorageReference = Storage.storage().reference()
     var currentUser: Users?
     var navBar: UINavigationBar!
     
     
-//    //For sample post
-//    let samplePost = Post()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicator.startAnimating()
- //       posts.append(samplePost)
         self.setupNavBar()
-//        self.setupNewPostView()
-//        self.setupButton()
         self.setupCollectionView()
         Users.getCurrentUser(withId: (Auth.auth().currentUser?.uid)!, block: {(cUser) in
             self.currentUser = cUser
@@ -44,9 +38,16 @@ class FeedViewController: UIViewController {
         FirebaseSocialAPIClient.fetchPosts(withBlock: { (posts) in
             self.posts.append(contentsOf: posts)
             print("the contents of posts are now... \(self.posts)")
-            self.postCollectionView.reloadData()
+            
+            for post in posts {
+                post.getEventPic() {
+                    self.postCollectionView.reloadData()
+                }
+            }
+            
+//            self.postCollectionView.reloadData()
 
-//            activityIndicator.stopAnimating()
+            activityIndicator.stopAnimating()
 
         })
     }
@@ -84,7 +85,7 @@ class FeedViewController: UIViewController {
     func setupCollectionView() {
         let frame = CGRect(x: 0, y: 50, width: view.frame.width, height: view.frame.height-50)
         let cvLayout = UICollectionViewFlowLayout()
-        cvLayout.minimumLineSpacing = 5
+        cvLayout.minimumLineSpacing = 10
         postCollectionView = UICollectionView(frame: frame, collectionViewLayout: cvLayout)
         postCollectionView.delegate = self
         postCollectionView.dataSource = self
@@ -119,7 +120,6 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return posts.count
-     //   return 10
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -127,36 +127,52 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.awakeFromNib()
         
         let postInQuestion = posts[indexPath.item]
-        cell.postText.text = postInQuestion.text
-        print(postInQuestion.text)
-        cell.posterText.text = postInQuestion.poster
-        print(postInQuestion.poster)
-//
-//        if indexPath.item == 0 {
-//            cell.profileImage.image = #imageLiteral(resourceName: "yeezy")
-//        }
-//        else {
-//            postInQuestion.getEventPic {
+        cell.postText.text = "Event: \n" + postInQuestion.eventName!
+        cell.posterText.text = "Host: " + postInQuestion.poster!
+        
+        //        postInQuestion.getEventPic {
         cell.profileImage.image = postInQuestion.image
-//            }
-//        }
+        //        }
     
         return cell
     }
-//
+
 //    override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
 //        return CGSize(width: postCollectionView.bounds.width - 20, height: 100)
 //    }
-//
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width - 20, height: 200)
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedCell = indexPath.item
+        self.performSegue(withIdentifier: "toDetailFromFeed", sender: self)
+    }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toDetailFromFeed" {
+            let details = segue.destination as! DetailViewController
+            
+            let postInQuestion = posts[selectedCell!]
+            let descriptionTest = postInQuestion.text!
+            let eventName = postInQuestion.eventName
+            let poster = postInQuestion.poster
+            let eventImage = postInQuestion.image
+            details.poster = poster
+            details.eventName = eventName
+            details.descrip = descriptionTest
+            details.eventImage = eventImage
+            details.interestedNum = postInQuestion.interested
+        }
+        
+    }
+    
 }
 
 

@@ -12,7 +12,7 @@ class PostCollectionViewCell: UICollectionViewCell {
     
     var profileImage: UIImageView!
     var posterText: UILabel!
-    var postText: UITextView!
+    var postText: UILabel!
     var interestedButton: UIButton!
     var numberInterested: UILabel!
     
@@ -40,26 +40,39 @@ class PostCollectionViewCell: UICollectionViewCell {
         profileImage = UIImageView(frame: CGRect(x: 10, y: 10, width: 0.50 * self.contentView.frame.width, height: 0.70 * self.contentView.frame.height))
         profileImage.layer.backgroundColor = UIColor.white.cgColor
         profileImage.clipsToBounds = true
-        profileImage.contentMode = .scaleAspectFit
+        profileImage.contentMode = .scaleAspectFill
+        profileImage.layer.borderColor = UIColor.white.cgColor
+        profileImage.layer.borderWidth = 3
+        profileImage.image = UIImage(named: "moreclouds")
         addSubview(profileImage)
     }
     
     func setupPosterText() {
         posterText = UILabel(frame: CGRect(x: profileImage.frame.maxX + 10, y: 10, width: self.contentView.frame.width * 0.5 - 30, height: 50))
-        posterText.layer.backgroundColor = UIColor.white.cgColor
+        posterText.backgroundColor = UIColor(patternImage: UIImage(named: "image")!)
         posterText.textColor = UIColor.black
-        posterText.font = UIFont.systemFont(ofSize: 24, weight: UIFont.Weight(rawValue: 2))
+        posterText.layer.borderColor = UIColor.white.cgColor
+        posterText.layer.borderWidth = 3
+        posterText.font = UIFont(name: "Strawberry Blossom", size: 25)
+        posterText.textAlignment = .center
         posterText.adjustsFontForContentSizeCategory = true
         addSubview(posterText)
     }
     
     func setupPostText() {
-        postText = UITextView(frame: CGRect(x: profileImage.frame.maxX + 10, y: posterText.frame.maxY + 10, width: self.contentView.frame.width * 0.5 - 30, height: 0.5 * self.frame.height - 20))
-        postText.layer.backgroundColor = UIColor.white.cgColor
+        postText = UILabel(frame: CGRect(x: profileImage.frame.maxX + 10, y: posterText.frame.maxY + 10, width: self.contentView.frame.width * 0.5 - 30, height: 0.5 * self.frame.height - 20))
+        postText.backgroundColor = UIColor(patternImage: UIImage(named: "image")!)
+        postText.font = UIFont(name: "Strawberry Blossom", size: 30)
         postText.textColor = UIColor.black
-        postText.adjustsFontForContentSizeCategory = true
-        postText.isEditable = false
+        postText.layer.borderWidth = 3
+        postText.layer.borderColor = UIColor.white.cgColor
+        postText.numberOfLines = 0
+        postText.textAlignment = .center
+        postText.adjustsFontSizeToFitWidth = true
+
         addSubview(postText)
+        postText.text = "Event: "
+        
     }
     
 }
