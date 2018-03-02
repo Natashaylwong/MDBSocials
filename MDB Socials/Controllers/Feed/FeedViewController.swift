@@ -163,11 +163,11 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let poster = postInQuestion.poster
             let eventImage = postInQuestion.image
             details.post = postInQuestion
+            details.interested = postInQuestion.interested
             details.poster = poster
             details.eventName = eventName
             details.descrip = descriptionTest
             details.eventImage = eventImage
-            details.interestedNum = postInQuestion.interestCount
             details.posterId = posterId
         }
         
