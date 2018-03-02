@@ -38,7 +38,6 @@ class NewPostViewController: UIViewController {
             })
         }
         setupExit()
-        // Do any additional setup after loading the view.
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -61,12 +60,10 @@ class NewPostViewController: UIViewController {
         let height = UIScreen.main.bounds.size.height
         let imageViewBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
         imageViewBackground.image = UIImage(named: "clouds")
-        
-        // you can change the content mode:
         imageViewBackground.contentMode = UIViewContentMode.scaleAspectFill
         imageViewBackground.alpha = 0.5
-        
         view.addSubview(imageViewBackground)
+        
         nameEventTextField = UITextField(frame: CGRect(x: 10, y: 0.6 * UIScreen.main.bounds.height - 50, width: UIScreen.main.bounds.width - 20, height: 40))
         nameEventTextField.adjustsFontSizeToFitWidth = true
         nameEventTextField.font = UIFont(name: "Strawberry Blossom", size: 30)
@@ -93,8 +90,6 @@ class NewPostViewController: UIViewController {
         descriptionTextField.layer.masksToBounds = true
         descriptionTextField.textColor = UIColor.black
         view.addSubview(descriptionTextField)
-        
-        
     }
     func setupEventImageView() {
         imagePost = UIImageView(frame: CGRect(x: 25, y: 60, width: view.frame.width - 50, height: 200))
@@ -118,7 +113,6 @@ class NewPostViewController: UIViewController {
         selectFromLibraryButton.layer.backgroundColor = UIColor.white.cgColor
         selectFromLibraryButton.setTitleColor(UIColor(red: 0.8078, green: 0.8078, blue: 0.8078, alpha: 1.0), for: .normal)
         selectFromLibraryButton.addTarget(self, action: #selector(pickImage), for: .touchUpInside)
-        
         view.bringSubview(toFront: selectFromLibraryButton)
         
         selectFromCameraButton = UIButton(frame: CGRect(x: 200, y: 280, width: UIScreen.main.bounds.width * 0.3, height: 40))
@@ -155,7 +149,6 @@ class NewPostViewController: UIViewController {
     
     func setupButtons() {
         newPostButton = UIButton(frame: CGRect(x: 10, y: 0.9 * UIScreen.main.bounds.height, width: UIScreen.main.bounds.width - 20, height: 30))
-      //  newPostButton.layoutIfNeeded()
         newPostButton.titleLabel?.font = UIFont(name: "Strawberry Blossom", size: 35)
         newPostButton.setTitle("Create New Post", for: .normal)
         newPostButton.setTitleColor(.white, for: .normal)
@@ -211,26 +204,12 @@ class NewPostViewController: UIViewController {
             // Apply date format
             let selectedDate: String = dateFormatter.string(from: date)
             print("Selected value \(selectedDate)")
-           
             
-            //TODO: Implement using Firebase!
             FirebaseSocialAPIClient.createNewPost(name: name, description: description, date: selectedDate, imageData: imageData!, host: (currentUser?.name)!, hostId: (currentUser?.id)!, interested: interested)
             
             self.dismiss(animated: true, completion: nil)
         }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -241,9 +220,8 @@ extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        print("pls")
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        imagePost.contentMode = .scaleAspectFit
+        imagePost.contentMode = .scaleAspectFill
         imagePost.image = chosenImage
         dismiss(animated:true, completion: nil)
     }

@@ -10,8 +10,8 @@ import UIKit
 import Firebase
 
 class DetailViewController: UIViewController {
-    var currentUser: Users?
-    var post: Post?
+    var currentUser: Users!
+    var post: Post!
     var poster: String?
     var eventName: String?
     var descrip: String?
@@ -25,17 +25,24 @@ class DetailViewController: UIViewController {
     var eventImageView: UIImageView!
     var descriptionLabel: UILabel!
     var interestedButton: UIButton!
-
+    var interestCount = 0
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if interested == nil {
+            interestedLabel.text = "\(interestCount)"
+        } else {
+            interestCount = interested.count
+            interestedLabel.text = "\(interestCount)"
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setupExit()
         setupLabels()
         setupInterested()
         setupImageView()
-        
-        Users.getCurrentUser(withId: (Auth.auth().currentUser?.uid)!, block: {(cUser) in
-            self.currentUser = cUser
-        })    }
+    
+        }
     let mainColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0)
     
     func setupImageView() {
@@ -88,14 +95,7 @@ class DetailViewController: UIViewController {
         view.addSubview(descriptionLabel)
         
         interestedLabel = UILabel(frame: CGRect(x: view.frame.width - 110, y: view.frame.height - 60, width: 50, height: 50))
-        if interested == nil {
-            interestedLabel.text = "\(0)"
-            interestedLabel.font = UIFont(name: "Strawberry Blossom", size: 20)
-
-        } else {
-            interestedLabel.text = "\(interested.count)"
-            interestedLabel.font = UIFont(name: "Strawberry Blossom", size: 20)
-        }
+        
         view.addSubview(interestedLabel)
     }
     
@@ -104,46 +104,43 @@ class DetailViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         interestedButton = UIButton(frame: CGRect(x: view.frame.width - 70, y: view.frame.height - 60, width: 50, height: 50))
         interestedButton.setImage(tintedImage, for: .normal)
-        interestedButton.tintColor = UIColor.black
-        
-//        if interestedNum.contains(currentUser?.id)) {
-//            interestedButton.tintColor = mainColor
-//        } else {
-//            interestedButton.tintColor = UIColor.black
-//        }
+        if interested == nil {
+            interestedButton.tintColor = UIColor.black
+        } else if interested.contains(currentUser.id!) {
+            interestedButton.tintColor = UIColor.red
+        } else {
+            interestedButton.tintColor = UIColor.black
+        }
         interestedButton.addTarget(self, action: #selector(interestPressed), for: .touchUpInside)
         view.addSubview(interestedButton)
     }
     
     @objc func interestPressed() {
-        if interested.contains((currentUser?.id)!) {
+        if interested == nil {
+            interestedButton.tintColor = UIColor.red
+            interested = [currentUser.id!]
+            interestedLabel.text = "\(interested.count)"
+            let postsRef = Database.database().reference().child("Posts").child(post.id!)
+            let childUpdates = ["interested": interested]
+            postsRef.updateChildValues(childUpdates)
+        }
+         else if interested.contains((currentUser?.id)!) {
             interestedButton.tintColor = UIColor.black
             let index = interested.index(of: (currentUser?.id)!)
             interested.remove(at: index!)
-            print("\(interested)")
-            interestedButton.tintColor = UIColor.black
             interestedLabel.text = "\(interested.count)"
-            let postsRef = Database.database().reference().child("Posts").child((post?.id)!)
+            let postsRef = Database.database().reference().child("Posts").child(post.id!)
             let childUpdates = ["interested": interested]
             postsRef.updateChildValues(childUpdates)
         } else {
             interestedButton.tintColor = UIColor.red
             interested.append((currentUser?.id)!)
-            print("\(interested)")
-            interestedButton.tintColor = mainColor
             interestedLabel.text = "\(interested.count)"
-            let postsRef = Database.database().reference().child("Posts").child((post?.id)!)
+            let postsRef = Database.database().reference().child("Posts").child(post.id!)
             let childUpdates = ["interested": interested]
             postsRef.updateChildValues(childUpdates)
         }
-        
-//        if fav == false {
-//            interestedButton.tintColor = mainColor
-//            fav = true
-//        } else {
-//            interestedButton.tintColor = UIColor.black
-//            fav = false
-//        }
+    
     }
     
 

@@ -12,7 +12,7 @@ import Firebase
 import ObjectMapper
 
 
-class Post: Mappable {
+class Post{
     var text: String?
     var imageUrl: String?
     var posterId: String?
@@ -22,49 +22,47 @@ class Post: Mappable {
     var id: String?
     var image: UIImage?
     
-    required init?(map: Map) {
-        
-    }
-    
-    func mapping(map: Map) {
-        text                        <- map["description"]
-        imageUrl                    <- map["imageUrl"]
-        posterId                    <- map["hostId"]
-        eventName                   <- map["name"]
-        interested                  <- map["interested"]
-        poster                      <- map["host"]
-        id                          <- map["postId"]
-        image                       <- map[""]
-    }
-    
-//    init(id: String, postDict: [String:Any]?) {
-//        self.id = id
-//        if postDict != nil {
-//            if let id = postDict!["postId"] as? String {
-//                self.id = id
-//            }
-//            if let text = postDict!["description"] as? String {
-//                self.text = text
-//            }
-//            if let imageUrl = postDict!["imageUrl"] as? String {
-//                self.imageUrl = imageUrl
-//            }
-//            if let posterId = postDict!["hostId"] as? String {
-//                self.posterId = posterId
-//            }
-//            if let poster = postDict!["host"] as? String {
-//                self.poster = poster
-//            }
-//            if let eventName = postDict!["name"] as? String {
-//                self.eventName = eventName
-//            }
-//            if let interested = postDict!["interested"] as? [String] {
-//                self.interested = interested
-//            }
-//        }
+//    required init?(map: Map) {
+//
+//    }
+//
+//    func mapping(map: Map) {
+//        text                        <- map["description"]
+//        imageUrl                    <- map["imageUrl"]
+//        posterId                    <- map["hostId"]
+//        eventName                   <- map["name"]
+//        interested                  <- map["interested"]
+//        poster                      <- map["host"]
+//        id                          <- map["postId"]
+//        image                       <- map[""]
 //    }
     
-    
+    init(id: String, postDict: [String:Any]?) {
+        self.id = id
+        if postDict != nil {
+            if let id = postDict!["postId"] as? String {
+                self.id = id
+            }
+            if let text = postDict!["description"] as? String {
+                self.text = text
+            }
+            if let imageUrl = postDict!["imageUrl"] as? String {
+                self.imageUrl = imageUrl
+            }
+            if let posterId = postDict!["hostId"] as? String {
+                self.posterId = posterId
+            }
+            if let poster = postDict!["host"] as? String {
+                self.poster = poster
+            }
+            if let eventName = postDict!["name"] as? String {
+                self.eventName = eventName
+            }
+            if let interested = postDict!["interested"] as? [String] {
+                self.interested = interested
+            }
+        }
+    }
 
     func getEventPic(withBlock: @escaping () -> ()) {
         //TODO: Get Picture from Storage

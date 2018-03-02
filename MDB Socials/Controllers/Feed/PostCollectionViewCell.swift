@@ -69,10 +69,7 @@ class PostCollectionViewCell: UICollectionViewCell {
         postText.numberOfLines = 0
         postText.textAlignment = .center
         postText.adjustsFontSizeToFitWidth = true
-
         addSubview(postText)
-        postText.text = "Event: "
-        
     }
     
 }

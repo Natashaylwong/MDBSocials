@@ -19,7 +19,6 @@ class FeedViewController: UIViewController {
     var newPostButton: UIButton!
     var postCollectionView: UICollectionView!
     var posts: [Post] = []
-  //  var auth = Auth.auth()
     var postsRef: DatabaseReference = Database.database().reference().child("Posts")
     var storage: StorageReference = Storage.storage().reference()
     var currentUser: Users?
@@ -35,6 +34,7 @@ class FeedViewController: UIViewController {
         Users.getCurrentUser(withId: (Auth.auth().currentUser?.uid)!, block: {(cUser) in
             self.currentUser = cUser
         })
+        
         FirebaseSocialAPIClient.fetchPosts(withBlock: { (posts) in
             self.posts.append(contentsOf: posts)
             for post in posts {
@@ -42,9 +42,6 @@ class FeedViewController: UIViewController {
                     self.postCollectionView.reloadData()
                 }
             }
-            
-//            self.postCollectionView.reloadData()
-
             activityIndicator.stopAnimating()
 
         })
@@ -63,22 +60,26 @@ class FeedViewController: UIViewController {
         let logOutButton = UIBarButtonItem(image: UIImage(named: "logout"), style: .plain, target: self, action: #selector(FeedViewController.logOut))
         self.navigationItem.leftBarButtonItem  = logOutButton
         self.navigationItem.title = "MDB Socials: Feed"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: UIFont(name: "Strawberry Blossom", size: 40)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: UIFont(name: "Strawberry Blossom", size: 40)!]
 
     }
-    @objc func addButtonPressed() {
-        self.performSegue(withIdentifier: "toNewPost", sender: self)
-    }
+    
+    // Logging out the current user
     @objc func logOut() {
-        print("this thing was clicked on")
         UserAuthHelper.logOut {
-            print("logged out")
             self.dismiss(animated: true, completion: nil)
             self.navigationController!.popToRootViewController(animated: true)
         }
     }
 
-
+    // Creating a new post
+    @objc func addButtonPressed() {
+        self.performSegue(withIdentifier: "toNewPost", sender: self)
+    }
+    
+    @objc func addNewPost(sender: UIButton!) {
+        self.performSegue(withIdentifier: "toNewPost", sender: self)
+    }
     
     func setupCollectionView() {
         let frame = CGRect(x: 0, y: 50, width: view.frame.width, height: view.frame.height-50)
@@ -88,28 +89,9 @@ class FeedViewController: UIViewController {
         postCollectionView.delegate = self
         postCollectionView.dataSource = self
         postCollectionView.register(PostCollectionViewCell.self, forCellWithReuseIdentifier: "post")
-
         postCollectionView.backgroundColor = UIColor.white
         view.addSubview(postCollectionView)
-
-
     }
-    
-    @objc func addNewPost(sender: UIButton!) {
-        self.performSegue(withIdentifier: "toNewPost", sender: self)
-    }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
 
 extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -124,24 +106,16 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let cell = postCollectionView.dequeueReusableCell(withReuseIdentifier: "post", for: indexPath) as! PostCollectionViewCell
         cell.awakeFromNib()
         
+        //Retrieving information from a post based on the indexPath.item
         let postInQuestion = posts[indexPath.item]
         cell.postText.text = "Event: \n" + postInQuestion.eventName!
         cell.posterText.text = "Host: " + postInQuestion.poster!
-        
-        //        postInQuestion.getEventPic {
         cell.profileImage.image = postInQuestion.image
-        //        }
-    
         return cell
     }
 
-//    override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
-//        return CGSize(width: postCollectionView.bounds.width - 20, height: 100)
-//    }
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width - 20, height: 200)
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -152,23 +126,22 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
-    
+    // Preparing information for segue into the DVC
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toDetailFromFeed" {
             let details = segue.destination as! DetailViewController
             let postInQuestion = posts[selectedCell!]
-            let descriptionTest = postInQuestion.text!
-            let posterId = postInQuestion.posterId
-            let eventName = postInQuestion.eventName
-            let poster = postInQuestion.poster
-            let eventImage = postInQuestion.image
             details.post = postInQuestion
             details.interested = postInQuestion.interested
-            details.poster = poster
-            details.eventName = eventName
-            details.descrip = descriptionTest
-            details.eventImage = eventImage
-            details.posterId = posterId
+            details.poster = postInQuestion.poster
+            details.eventName = postInQuestion.eventName
+            details.descrip = postInQuestion.text
+            details.eventImage = postInQuestion.image
+            details.posterId = postInQuestion.posterId
+            details.currentUser = currentUser
+            if postInQuestion.interested != nil {
+                print("\(postInQuestion.interested?.count)")
+            }
         }
         
     }

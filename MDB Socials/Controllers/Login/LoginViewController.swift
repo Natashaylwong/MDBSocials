@@ -54,8 +54,8 @@ class LoginViewController: UIViewController {
         
         view.addSubview(imageViewBackground)
         
-        titleApp = UILabel(frame: CGRect(x: 0, y: 80, width: view.frame.width, height: 100))
-        titleApp.font = UIFont(name: "Strawberry Blossom", size: 80)
+        titleApp = UILabel(frame: CGRect(x: 0, y: 100, width: view.frame.width, height: 100))
+        titleApp.font = UIFont(name: "Strawberry Blossom", size: 100)
         titleApp.backgroundColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0)
         titleApp.layer.borderColor = UIColor.white.cgColor
         titleApp.textColor = .white
