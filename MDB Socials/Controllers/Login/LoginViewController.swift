@@ -16,6 +16,8 @@ class LoginViewController: UIViewController {
     var passwordTextField: UITextField!
     var loginButton: UIButton!
     var signupButton: UIButton!
+    var color = Constants.appColor
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +58,7 @@ class LoginViewController: UIViewController {
         
         titleApp = UILabel(frame: CGRect(x: 0, y: 100, width: view.frame.width, height: 100))
         titleApp.font = UIFont(name: "Strawberry Blossom", size: 100)
-        titleApp.backgroundColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0)
+        titleApp.backgroundColor = color
         titleApp.layer.borderColor = UIColor.white.cgColor
         titleApp.textColor = .white
         titleApp.textAlignment = .center
@@ -75,8 +77,8 @@ class LoginViewController: UIViewController {
         emailTextField.layoutIfNeeded()
         emailTextField.isEnabled = true
         emailTextField.borderStyle = .roundedRect
-        emailTextField.layer.borderColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
-        emailTextField.layer.backgroundColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        emailTextField.layer.borderColor = color?.cgColor
+        emailTextField.layer.backgroundColor = color?.cgColor
         emailTextField.layer.borderWidth = 1.0
         emailTextField.layer.masksToBounds = true
         emailTextField.textColor = .black
@@ -89,9 +91,9 @@ class LoginViewController: UIViewController {
         passwordTextField.placeholder = "Password"
         passwordTextField.textAlignment = .center
         passwordTextField.borderStyle = .roundedRect
-        passwordTextField.layer.borderColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        passwordTextField.layer.borderColor = color?.cgColor
         passwordTextField.layer.borderWidth = 1.0
-        passwordTextField.layer.backgroundColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        passwordTextField.layer.backgroundColor = color?.cgColor
         passwordTextField.layer.masksToBounds = true
         passwordTextField.textColor = .black
         passwordTextField.isSecureTextEntry = true
@@ -107,7 +109,7 @@ class LoginViewController: UIViewController {
         loginButton.setTitleColor(UIColor.white, for: .normal)
         loginButton.layer.borderWidth = 2.0
         loginButton.layer.cornerRadius = 3.0
-        loginButton.layer.backgroundColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        loginButton.layer.backgroundColor = color?.cgColor
         loginButton.layer.borderColor = UIColor.white.cgColor
         loginButton.layer.masksToBounds = true
         loginButton.addTarget(self, action: #selector(loginButtonClicked), for: .touchUpInside)
@@ -120,7 +122,7 @@ class LoginViewController: UIViewController {
         signupButton.setTitleColor(UIColor.white, for: .normal)
         signupButton.layer.borderWidth = 2.0
         signupButton.layer.cornerRadius = 3.0
-        signupButton.layer.backgroundColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        signupButton.layer.backgroundColor = color?.cgColor
         signupButton.layer.borderColor = UIColor.white.cgColor
         signupButton.layer.masksToBounds = true
         signupButton.addTarget(self, action: #selector(signupButtonClicked), for: .touchUpInside)

@@ -25,6 +25,9 @@ class NewPostViewController: UIViewController {
     var exitButton: UIButton!
     var imageText: UILabel!
     
+    var color = Constants.appColor
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         picker.delegate = self
@@ -70,7 +73,7 @@ class NewPostViewController: UIViewController {
         nameEventTextField.placeholder = "Event Name"
         nameEventTextField.textAlignment = .center
         nameEventTextField.layoutIfNeeded()
-        nameEventTextField.layer.borderColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        nameEventTextField.layer.borderColor = color?.cgColor
         nameEventTextField.borderStyle = .roundedRect
         nameEventTextField.layer.backgroundColor = UIColor.white.cgColor
         nameEventTextField.layer.borderWidth = 1.0
@@ -84,7 +87,7 @@ class NewPostViewController: UIViewController {
         descriptionTextField.placeholder = "Short Description of the Event"
         descriptionTextField.textAlignment = .center
         descriptionTextField.borderStyle = .roundedRect
-        descriptionTextField.layer.borderColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        descriptionTextField.layer.borderColor = color?.cgColor
         descriptionTextField.layer.backgroundColor = UIColor.white.cgColor
         descriptionTextField.layer.borderWidth = 1.0
         descriptionTextField.layer.masksToBounds = true
@@ -94,7 +97,7 @@ class NewPostViewController: UIViewController {
     func setupEventImageView() {
         imagePost = UIImageView(frame: CGRect(x: 25, y: 60, width: view.frame.width - 50, height: 200))
         imagePost.layer.backgroundColor = UIColor.white.cgColor
-        imagePost.layer.borderColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        imagePost.layer.borderColor = color?.cgColor
         imagePost.layer.borderWidth = 2
         imageText = UILabel(frame: CGRect(x: 30, y: 140, width: view.frame.width - 60, height: 50))
         imageText.text = "Insert a Picture of the Event"
@@ -108,7 +111,7 @@ class NewPostViewController: UIViewController {
         selectFromLibraryButton = UIButton(frame: CGRect(x: 50, y: 280, width: UIScreen.main.bounds.width * 0.3, height: 40))
         selectFromLibraryButton.titleLabel?.font = UIFont(name: "Strawberry Blossom", size: 35)
         selectFromLibraryButton.setTitle("Library", for: .normal)
-        selectFromLibraryButton.layer.borderColor =  UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        selectFromLibraryButton.layer.borderColor =  color?.cgColor
         selectFromLibraryButton.layer.borderWidth = 1
         selectFromLibraryButton.layer.backgroundColor = UIColor.white.cgColor
         selectFromLibraryButton.setTitleColor(UIColor(red: 0.8078, green: 0.8078, blue: 0.8078, alpha: 1.0), for: .normal)
@@ -118,7 +121,7 @@ class NewPostViewController: UIViewController {
         selectFromCameraButton = UIButton(frame: CGRect(x: 200, y: 280, width: UIScreen.main.bounds.width * 0.3, height: 40))
         selectFromCameraButton.titleLabel?.font = UIFont(name: "Strawberry Blossom", size: 35)
         selectFromCameraButton.setTitle("Camera", for: .normal)
-        selectFromCameraButton.layer.borderColor =  UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        selectFromCameraButton.layer.borderColor =  color?.cgColor
         selectFromCameraButton.layer.borderWidth = 1
         selectFromCameraButton.layer.backgroundColor = UIColor.white.cgColor
         selectFromCameraButton.setTitleColor(UIColor(red: 0.8078, green: 0.8078, blue: 0.8078, alpha: 1.0), for: .normal)
@@ -154,7 +157,7 @@ class NewPostViewController: UIViewController {
         newPostButton.setTitleColor(.white, for: .normal)
         newPostButton.layer.borderWidth = 2.0
         newPostButton.layer.cornerRadius = 5.0
-        newPostButton.layer.backgroundColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0).cgColor
+        newPostButton.layer.backgroundColor = color?.cgColor
         newPostButton.layer.borderColor = UIColor.white.cgColor
         newPostButton.layer.masksToBounds = true
         newPostButton.addTarget(self, action: #selector(addNewPost), for: .touchUpInside)
@@ -184,7 +187,7 @@ class NewPostViewController: UIViewController {
         dateFormatter.dateFormat = "MM/dd/yyyy hh:mm a"
         // Apply date format
         let selectedDate: String = dateFormatter.string(from: date)
-        print("Selected value \(selectedDate)")
+
         if imagePost.image == nil || description == "" || name == "" {
             let alert = UIAlertController(title: "Not all information inputted", message: "Unable to create a new post", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))

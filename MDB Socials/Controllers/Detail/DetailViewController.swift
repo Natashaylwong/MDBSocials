@@ -27,6 +27,9 @@ class DetailViewController: UIViewController {
     var interestedButton: UIButton!
     var interestCount = 0
     
+    var color = Constants.appColor
+
+    
     override func viewDidAppear(_ animated: Bool) {
         if interested == nil {
             interestedLabel.text = "\(interestCount)"
@@ -42,12 +45,10 @@ class DetailViewController: UIViewController {
         setupInterested()
         setupImageView()
     
-        }
-    let mainColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0)
-    
+        }    
     func setupImageView() {
         eventImageView = UIImageView(frame: CGRect(x: 0, y: 220, width: view.frame.width, height: 250))
-        eventImageView.backgroundColor = mainColor
+        eventImageView.backgroundColor = color
         eventImageView.layer.borderColor = UIColor.black.cgColor
         eventImageView.layer.borderWidth = 2
         eventImageView.alpha = 0.9

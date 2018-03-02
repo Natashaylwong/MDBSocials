@@ -15,13 +15,15 @@ class PostCollectionViewCell: UICollectionViewCell {
     var postText: UILabel!
     var interestedButton: UIButton!
     var numberInterested: UILabel!
+    var color = Constants.appColor
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
         for subview in self.subviews {
             subview.removeFromSuperview()
         }
-        self.backgroundColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0)
+        self.backgroundColor = color
         setupProfileImage()
         setupPosterText()
         setupPostText()

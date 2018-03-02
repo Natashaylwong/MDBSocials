@@ -23,6 +23,8 @@ class FeedViewController: UIViewController {
     var storage: StorageReference = Storage.storage().reference()
     var currentUser: Users?
     var navBar: UINavigationBar!
+    var color = Constants.appColor
+
     
     
     override func viewDidLoad() {
@@ -54,7 +56,7 @@ class FeedViewController: UIViewController {
     
     func setupNavBar() {
         navigationController?.navigationBar.tintColor = UIColor.white;
-        navigationController?.navigationBar.barTintColor = UIColor(red: 0.5882, green: 0.8157, blue: 0.9686, alpha: 1.0)
+        navigationController?.navigationBar.barTintColor = color
         let addButton = UIBarButtonItem(image: UIImage(named: "adds"), style: .plain, target: self, action: #selector(addButtonPressed))
         self.navigationItem.rightBarButtonItem  = addButton
         let logOutButton = UIBarButtonItem(image: UIImage(named: "logout"), style: .plain, target: self, action: #selector(FeedViewController.logOut))

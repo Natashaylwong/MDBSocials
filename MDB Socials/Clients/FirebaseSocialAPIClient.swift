@@ -51,20 +51,23 @@ class FirebaseSocialAPIClient {
     // Creating a new user and updating the user node in Firebase
     static func createNewUser(id: String, name: String, email: String, username: String, profilePic: Data) {
 //        let usersRef = Database.database().reference().child("Users")
-        //        let newUser = ["name": name, "email": email, "username": username, "imageURL": imageURL]
+//                let newUser = ["name": name, "email": email, "username": username, "imageURL": imageURL]
 //        let childUpdates = ["/\(id)/": newUser]
 //        usersRef.updateChildValues(childUpdates)
-        
         let usersRef = Database.database().reference().child("Users")
         let storage = Storage.storage().reference().child("User Images/\(id)")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
-        storage.putData(profilePic, metadata: metadata).observe(.success) {(snapshot) in
+        storage.putData(profilePic, metadata: metadata).observe(.success) {(snapshot) in print("image stored")
             let imageURL = snapshot.metadata?.downloadURL()?.absoluteString as! String
-            let newUser = ["name": name, "email": email, "username": username, "imageURL": imageURL]
-            let childUpdates = ["/\(id)/": newUser]
+            print(imageURL)
+            let newUser = ["name": name, "email": email, "username": username, "imageUrl": imageURL] as [String: Any]
+            let childUpdates = ["\(id)": newUser]
             usersRef.updateChildValues(childUpdates)
         }
+    }
+    
+    func storeProfileImage(image: Data) {
     }
 }
 
