@@ -16,7 +16,7 @@ class Post {
     var imageUrl: String?
     var posterId: String?
     var eventName: String?
-    var interested: [String]?
+    var interestCount: Int?
     var poster: String?
     var id: String?
     var image: UIImage?
@@ -43,8 +43,8 @@ class Post {
             if let eventName = postDict!["name"] as? String {
                 self.eventName = eventName
             }
-            if let interested = postDict!["interested"] as? [String] {
-                self.interested = interested
+            if let interestCount = postDict!["interestCount"] as? Int {
+                self.interestCount = interestCount
             }
         }
     }
@@ -58,7 +58,6 @@ class Post {
             if let error = error {
                 print(error)
             } else {
-                print("are you going in?")
                 self.image = UIImage(data: data!)
                 withBlock()
             }

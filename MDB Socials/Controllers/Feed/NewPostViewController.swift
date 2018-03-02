@@ -203,7 +203,7 @@ class NewPostViewController: UIViewController {
             let name = nameEventTextField.text!
             let date = datePicker.date
             let dateFormatter: DateFormatter = DateFormatter()
-            let interested = [currentUser?.id]
+            let interested = 0
             
             // Set date format
             dateFormatter.dateFormat = "MM/dd/yyyy hh:mm a"
@@ -214,7 +214,7 @@ class NewPostViewController: UIViewController {
            
             
             //TODO: Implement using Firebase!
-            FirebaseSocialAPIClient.createNewPost(name: name, description: description, date: selectedDate, imageData: imageData!, host: (currentUser?.name)!, hostId: (currentUser?.id)!, interested: interested as! [String])
+            FirebaseSocialAPIClient.createNewPost(name: name, description: description, date: selectedDate, imageData: imageData!, host: (currentUser?.name)!, hostId: (currentUser?.id)!, interested: interested)
             
             self.dismiss(animated: true, completion: nil)
         }

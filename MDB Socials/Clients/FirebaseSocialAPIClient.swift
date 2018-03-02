@@ -30,7 +30,7 @@ class FirebaseSocialAPIClient {
         })
     }
     // Creating a new post and saving it into Firebase
-    static func createNewPost(name: String, description: String, date: String, imageData: Data, host: String, hostId: String, interested: [String]) {
+    static func createNewPost(name: String, description: String, date: String, imageData: Data, host: String, hostId: String, interested: Int) {
         let postsRef = Database.database().reference().child("Posts")
         let key = postsRef.childByAutoId().key
         let storage = Storage.storage().reference().child("Event Images/\(key)")
@@ -38,9 +38,7 @@ class FirebaseSocialAPIClient {
         metadata.contentType = "image/jpeg"
         storage.putData(imageData, metadata: metadata).observe(.success) {(snapshot) in print("image stored")
             let imageURL = snapshot.metadata?.downloadURL()?.absoluteString as! String
-            var interested = [hostId]
-            interested.append(hostId)
-            let newPost = ["name": name, "description": description, "date": date, "imageURL": imageURL, "host": host, "hostId": hostId, "postId": key, "interested": interested] as [String: Any]
+            let newPost = ["name": name, "description": description, "date": date, "imageURL": imageURL, "host": host, "hostId": hostId, "postId": key, "interest": 0] as [String: Any]
             let childUpdates = ["\(key)": newPost]
             postsRef.updateChildValues(childUpdates)
         }
@@ -52,5 +50,43 @@ class FirebaseSocialAPIClient {
         let childUpdates = ["/\(id)/": newUser]
         usersRef.updateChildValues(childUpdates)
     }
+    
+//    static func createNewInterested(userID: String, postID: String){
+//        let ref = Database.database().reference()
+//        let key = ref.child("Interested").childByAutoId().key
+//        ref.child("Interested").setValue([postID : [userID : ""]])
+//    }
+//
+//    static func fetchInterested(postID: String, withBlock: @escaping (String) -> ()) {
+//        let ref = Database.database().reference().child("Interested")
+//        ref.child(postID).observe(.childAdded, with: { (snapshot) in
+//            withBlock(snapshot.key)
+//        })
+//    }
+//
+//    static func fetchRSVP(postID: String, withBlock: @escaping (Int) -> ()) {
+//        let ref = Database.database().reference()
+//        ref.child("Posts").child(postID).observe(.childChanged, with: { (snapshot) in
+//            withBlock(snapshot.value as! Int)
+//        })
+//    }
+//
+//    static func eventRSVP(postID: String, userID: String) {
+//        let ref = Database.database().reference()
+//        ref.child("Posts").child(postID).runTransactionBlock({ (currentData:MutableData) -> TransactionResult in
+//            if var post = currentData.value as? [String: AnyObject] {
+//                var rsvpCount = post["interestCount"] as? Int ?? 0
+//                rsvpCount += 1
+//                post["interestCount"] = rsvpCount as AnyObject?
+//                currentData.value = post
+//                return TransactionResult.success(withValue: currentData)
+//            }
+//            return TransactionResult.abort()
+//        })
+//        ref.child("Interested").child(postID).setValue([userID : ""])
+//    }
+
+    
+    
 }
 

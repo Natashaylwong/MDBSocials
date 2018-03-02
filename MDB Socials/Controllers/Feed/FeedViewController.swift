@@ -37,8 +37,6 @@ class FeedViewController: UIViewController {
         })
         FirebaseSocialAPIClient.fetchPosts(withBlock: { (posts) in
             self.posts.append(contentsOf: posts)
-            print("the contents of posts are now... \(self.posts)")
-            
             for post in posts {
                 post.getEventPic() {
                     self.postCollectionView.reloadData()
@@ -158,17 +156,19 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toDetailFromFeed" {
             let details = segue.destination as! DetailViewController
-            
             let postInQuestion = posts[selectedCell!]
             let descriptionTest = postInQuestion.text!
+            let posterId = postInQuestion.posterId
             let eventName = postInQuestion.eventName
             let poster = postInQuestion.poster
             let eventImage = postInQuestion.image
+            details.post = postInQuestion
             details.poster = poster
             details.eventName = eventName
             details.descrip = descriptionTest
             details.eventImage = eventImage
-            details.interestedNum = postInQuestion.interested
+            details.interestedNum = postInQuestion.interestCount
+            details.posterId = posterId
         }
         
     }
