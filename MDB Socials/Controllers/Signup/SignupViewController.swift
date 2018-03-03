@@ -218,8 +218,6 @@ class SignupViewController: UIViewController {
         let username = usernameTextField.text!
         print("username")
         let imageData = UIImageJPEGRepresentation(imagePost.image!, 0.9)
-        let imageURL = FirebaseSocialAPIClient.storeProfileImage(imageData)
-        print(imageURL)
         if imagePost.image == nil || email == "" || password == "" || username == "" || name  == "" {
             let alert = UIAlertController(title: "Not all information inputted", message: "Please fill out all fields", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
